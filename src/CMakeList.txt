@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 1.0)                 # Версия проекта
+
+project(s21_Containers_2)                           # Название проекта
+
+set(CMAKE_CXX_STANDARD 17)                          # Устанавливаем стандарт C++17
+
+set(SOURCE_OBJ s21_AVL_Tree.tpp)                    # Установка переменной со списком исходников для исполняемого файла
+set(SOURCE_LIB s21_AVL_Tree.h)                      # Тоже самое, но для библиотеки
+
+add_library(s21_Containers STATIC ${SOURCE_LIB})    # Создание статической библиотеки с именем s21_Containers
+add_executable(main ${SOURCE_EXE})                  # Создает исполняемый файл с именем main
+target_link_libraries(main foo)		                # Линковка программы с библиотекой
