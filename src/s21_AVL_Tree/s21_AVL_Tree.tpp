@@ -43,12 +43,6 @@ namespace s21 {
         }
     }
     
-
-    // template <typename Key,typename Node>
-    // Node * RecTravl(Node * a,Key key){
-        
-    // }
-
     template <typename Node>
     Node * RotateRight(Node * a){ 
         Node * b = a->left_;
@@ -72,29 +66,26 @@ namespace s21 {
     template <typename Node>
     Node * RotateNBalance(Node * a){
         FixHeight(a);
-        if(a->left_!=nullptr && a->right_!=nullptr){
-            int bf = BalanceFactor(a);
-            if(bf==2){ // вправо влево
-                puts("===Rotate 2====");
-                printf("(M)(key %d) h(%d)\n",a->key_, a->height_);
-                printf("(L)(key %d) h(%d)\n",a->left_->key_, a->left_->height_);
-                printf("(R)(key %d) h(%d)\n",a->right_->key_, a->right_->height_);
-                printf("balanceFactore %s\n",BalanceFactor(a->right_)<0?"true":"false");
-                puts("===Rotate ====");
-                if(BalanceFactor(a->right_)<0)  a->right_=RotateRight(a->right_);
-                a=RotateLeft(a);
-            }else if (bf==-2){ // влево вправо
-                puts("===Rotate -2====");
-                printf("(M)(key %d) h(%d)\n",a->key_, a->height_);
-                printf("(L)(key %d) h(%d)\n",a->left_->key_, a->left_->height_);
-                printf("(R)(key %d) h(%d)\n",a->right_->key_, a->right_->height_);
-                printf("balanceFactore %s\n",BalanceFactor(a->left_)>0?"true":"false");
-                puts("===Rotate ====");
-                if(BalanceFactor(a->left_)>0)   a->left_=RotateLeft(a->left_);
-                a=RotateRight(a);
-            }
+        int bf = BalanceFactor(a);
+        if(bf==2){ // влево вправо
+                // puts("===Rotate 2====");
+                // printf("(M)(key %d) h(%d)\n",a->key_, a->height_);
+                // printf("(L)(key %d) h(%d)\n",a->left_->key_, a->left_->height_);
+                // printf("(R)(key %d) h(%d)\n",a->right_->key_, a->right_->height_);
+                // printf("balanceFactore %s\n",BalanceFactor(a->right_)<0?"true":"false");
+                // puts("===Rotate ====");
+            if(a->left_ != nullptr && BalanceFactor(a->left_)<0) a->left_=RotateLeft(a->left_); //a->right_=RotateRight(a->right_);
+            a=RotateRight(a);
+        }else if (bf==-2){ // вправо влево 
+                // puts("===Rotate -2====");
+                // printf("(M)(key %d) h(%d)\n",a->key_, a->height_);
+                // printf("(L)(key %d) h(%d)\n",a->left_->key_, a->left_->height_);
+                // printf("(R)(key %d) h(%d)\n",a->right_->key_, a->right_->height_);
+                // printf("balanceFactore %s\n",BalanceFactor(a->left_)>0?"true":"false");
+                // puts("===Rotate ====");
+            if(a->right_ != nullptr && BalanceFactor(a->right_)>0)  a->right_=RotateRight(a->right_); //a->left_=RotateLeft(a->left_);
+            a=RotateLeft(a);
         }
-        
         return a;
     }
 
@@ -128,7 +119,7 @@ namespace s21 {
         }
     }
 
-template <typename Key, typename Value>
+    template <typename Key, typename Value>
     Tree<Key, Value>::~Tree() {
         if (this->root_ != nullptr) {
             ReversDelet(this->root_);

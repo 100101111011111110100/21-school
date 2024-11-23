@@ -53,108 +53,40 @@ TEST(s21_AVL_TREE, copy_constructor_01) {
 
 TEST(s21_AVL_TREE, InsertObject_01) {
     s21::Tree<int, int> a(1,2);
-    a.InsObj(2, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(3, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(4, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(5, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(6, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(7, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(8, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(9, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    a.InsObj(10, 3);
-    a.PrintTree(a.getNode());
-    puts("```");
-    // a.InsObj(3, 3);
-    // EXPECT_EQ(a.getNode()->key_, 1);
-    // EXPECT_EQ(a.getNode()->value_, 2);
-    // EXPECT_EQ(a.getNode()->height_, 1);
-    // EXPECT_EQ(a.getNode()->left_, nullptr);
-    // EXPECT_EQ(a.getNode()->right_->key_,2);
-    // EXPECT_EQ(a.getNode()->right_->value_,3);
-    // EXPECT_EQ(a.getNode()->right_->right_->key_,3);
-    // EXPECT_EQ(a.getNode()->right_->right_->value_,3);
-    // a.~Tree();
-    // EXPECT_EQ(a.getNode(), nullptr);
+    for(int i=1;i<8;i++){
+        a.InsObj(i, 3);
+        // a.PrintTree(a.getNode());
+        // puts("```");   
+    }
+    EXPECT_EQ(a.getNode()->key_,4);
+    EXPECT_EQ(a.getNode()->left_->key_,2);
+    EXPECT_EQ(a.getNode()->left_->left_->key_,1);
+    EXPECT_EQ(a.getNode()->left_->right_->key_,3);
+    EXPECT_EQ(a.getNode()->right_->key_,6);
+    EXPECT_EQ(a.getNode()->right_->left_->key_,5);
+    EXPECT_EQ(a.getNode()->right_->right_->key_,7);
+    a.~Tree();
+    EXPECT_EQ(a.getNode(), nullptr);
 }
 
-// TEST(s21_AVL_TREE, copy_constructor_02) {
-//     s21::Tree<int, int> a(1,2);
-//     a.InsObj(2, 3);
-//     a.InsObj(3, 3);
-//     s21::Tree<int, int> b(a);
-//     EXPECT_EQ(b.getNode()->key_, 1);
-//     EXPECT_EQ(b.getNode()->value_, 2);
-//     EXPECT_EQ(b.getNode()->height_, 1);
-//     EXPECT_EQ(b.getNode()->left_, nullptr);
-//     EXPECT_EQ(b.getNode()->right_->key_,2);
-//     EXPECT_EQ(b.getNode()->right_->value_,3);
-//     EXPECT_EQ(b.getNode()->right_->right_->key_,3);
-//     EXPECT_EQ(b.getNode()->right_->right_->value_,3);
-//     a.~Tree();
-//     EXPECT_EQ(a.getNode(), nullptr);
-//     b.~Tree();
-//     EXPECT_EQ(b.getNode(), nullptr);
-// }
-
-// TEST(s21_AVL_TREE,rebalance) {
-//     s21::Tree<int, int> a(2,2);
-//     a.PrintTree(a.getNode());
-//     a.InsObj(1, 3);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(8, 4);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(6, 5);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(5, 3);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(7, 3);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(9, 3);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.~Tree();
-//     EXPECT_EQ(a.getNode(), nullptr);
-// }
-
-// TEST(s21_AVL_TREE,rebalance) {
-//     s21::Tree<int, int> a(2,2);
-//     a.PrintTree(a.getNode());
-//     a.InsObj(1, 3);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(4, 4);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(3, 5);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.InsObj(5, 3);
-//     printf("========\n");
-//     a.PrintTree(a.getNode());
-//     a.~Tree();
-//     EXPECT_EQ(a.getNode(), nullptr);
-// }
+TEST(s21_AVL_TREE, InsertObject_02) {
+    s21::Tree<int, int> a(9,2);
+    int array[]={17,20,16,12,21,6};
+    for(int i=0;i<6;i++){
+        a.InsObj(array[i], 3);
+        // a.PrintTree(a.getNode());
+        // puts("```");   
+    }
+    EXPECT_EQ(a.getNode()->key_,17);
+    EXPECT_EQ(a.getNode()->left_->key_,12);
+    EXPECT_EQ(a.getNode()->right_->key_,20);
+    EXPECT_EQ(a.getNode()->left_->left_->key_,9);
+    EXPECT_EQ(a.getNode()->left_->right_->key_,16);
+    EXPECT_EQ(a.getNode()->left_->left_->left_->key_,6);
+    EXPECT_EQ(a.getNode()->right_->right_->key_,21);
+    a.~Tree();
+    EXPECT_EQ(a.getNode(), nullptr);
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
