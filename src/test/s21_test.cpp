@@ -88,6 +88,20 @@ TEST(s21_AVL_TREE, InsertObject_02) {
     EXPECT_EQ(a.getNode(), nullptr);
 }
 
+TEST(s21_AVL_TREE, DeleteObject_01) {
+    s21::Tree<int, int> a(1,2);
+    for(int i=2;i<9;i++){
+        a.InsObj(i, 3);
+        // a.PrintTree(a.getNode());
+        // puts("```");   
+    }
+    a.PrintTree(a.getNode());
+        puts("```");  
+    a.Remove(6);
+    a.PrintTree(a.getNode());
+        puts("```");  
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

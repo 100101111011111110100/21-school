@@ -111,6 +111,44 @@ namespace s21 {
     }
 
     template <typename Node>
+    Node * FindMin(Node * a){
+        return a->left_?FindMin(a->left_):a;
+    }
+
+    template <typename Node>
+    Node * RemoveMin(Node * a){
+        if(a->left_ == nullptr){
+            return a->right_;
+        }else{
+            a->left_=RemoveMin(a->left_);
+        }
+        return RotateNBalance(a);
+    }
+
+    template <typename Node,typename Key>
+    Node * MainRemove(Node * a,Key key){
+        if(a == nullptr)     return nullptr;
+        if(key<a->key_){
+            a->left_=MainRemove(a->left_,key);
+        }else if (key > a->key_){
+            a->right_=MainRemove(a->right_,key);
+        }else{
+            Node * b = a->left_;
+            Node * c = a->right_;
+            delete a;
+            a = FindMin(c);
+            a->right_= RemoveMin(c);
+            a->left_ = b;
+        }
+        return RotateNBalance(a);
+    }
+
+    template <typename Key,typename Value>
+    void Tree <Key, Value>::Remove(Key key){
+        this->root_ = MainRemove(this->root_,key);
+    }
+
+    template <typename Node>
     void ReversDelet(Node *a) {
         if (a != nullptr) {
             ReversDelet(a->left_);

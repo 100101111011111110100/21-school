@@ -14,7 +14,9 @@ namespace s21 {
             //Set
             //void setNode(Node *a);
             //          
-            void InsObj(Key key, Value value) ;
+            void InsObj(Key key, Value value);
+            void Remove(Key key);
+
 
             void PrintTree(Node * root){
                 printf("(M)(key %d) h(%d)\n",root->key_, root->height_);
