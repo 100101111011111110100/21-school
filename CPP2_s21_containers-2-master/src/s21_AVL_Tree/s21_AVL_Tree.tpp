@@ -150,10 +150,14 @@ namespace s21 {
         }else{
             Node * b = a->left_;
             Node * c = a->right_;
+            Node * a_parent=a->parent_;
             delete a;
             a = FindMin(c);
             a->right_= RemoveMin(c);
+            a->parent_=a_parent;
+            if(a->right_ != nullptr) a->right_->parent_=&(*a);
             a->left_ = b;
+            if(a->left_ != nullptr) a->left_->parent_=&(*a);
         }
         return RotateNBalance(a);
     }
@@ -164,10 +168,10 @@ namespace s21 {
     }
 
     template <typename Node>
-    void ReversDelet(Node *a) {
+    void ReversDelete(Node *a) {
         if (a != nullptr) {
-            ReversDelet(a->left_);
-            ReversDelet(a->right_);
+            ReversDelete(a->left_);
+            ReversDelete(a->right_);
             delete a;
         }
     }
@@ -175,7 +179,7 @@ namespace s21 {
     template <typename Key, typename Value>
     Tree<Key, Value>::~Tree() {
         if (this->root_ != nullptr) {
-            ReversDelet(this->root_);
+            ReversDelete(this->root_);
             this->root_=nullptr;          
         }
     }
