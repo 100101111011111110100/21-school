@@ -37,12 +37,32 @@ namespace s21 {
                     this->address_ = a;
                 }
                 Iterator(const Iterator & a){
-                    this->address_=a->address_;
+                    this->address_=a.address_;
                 }
                 ~Iterator(){
                     if(this->address_ != nullptr) this->address_=nullptr;
                 }
+
+                Node * get(){
+                    return this->address_;
+                }
                 Iterator &operator++(){
+                    if(this->address_->right_ != nullptr){
+                        this->address_=this->address_->right_;
+                        while((this->address_!=nullptr)&&(this->address_->left_ != nullptr)){
+                            this->address_=this->address_->left_;
+                        }
+                    }else{
+                        Node * tempPtr = this->address_;
+                        if(this->address_->parent_ != nullptr) this->address_ = this->address_->parent_;
+                        while ((tempPtr == this->address_->right_)&&this->address_ != nullptr){
+                            tempPtr=this->address_;
+                            this->address_=this->address_->parent_;
+                        }
+                    }
+                    return * this;
+                }
+                Iterator & operator--(){
                     if(this->address_->right_ != nullptr){
                         this->address_=this->address_->right_;
                         while((this->address_!=nullptr)&&(this->address_->left_ != nullptr)){
@@ -62,13 +82,13 @@ namespace s21 {
                 Node * address_ = nullptr;
 
                 friend class Tree;
-            }
-            class  ConstIterator{
-                public:
+            };
+            // class  ConstIterator{
+            //     public:
 
-                private:
+            //     private:
 
-            }
+            // }
 
             Iterator begin(){
                 Node * tmpPtr = this->root_;
@@ -83,8 +103,6 @@ namespace s21 {
             Tree(Key key, Value value);
             Tree(const Tree<Key, Value> &obj);
             ~Tree();
-            protected:
-            
             private:
             typedef struct Node{
                 Node * left_    = nullptr;

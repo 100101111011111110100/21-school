@@ -1,8 +1,8 @@
 #ifndef S21_MAP_H_
 #define S21_MAP_H_
 
-#include "../s21_AVL_Tree/s21_AVL_Tree.hpp"
-#include "../s21_containers.h"
+// #include "../s21_AVL_Tree/s21_AVL_Tree.hpp"
+#include "../s21_containers.hpp"
 
 namespace s21 {
 
