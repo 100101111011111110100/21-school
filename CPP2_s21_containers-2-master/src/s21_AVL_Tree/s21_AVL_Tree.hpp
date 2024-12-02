@@ -30,6 +30,24 @@ namespace s21 {
                 } 
             }
             #endif
+            class Iterator{
+                public:
+                Iterator() = default;
+                Iterator(Node * a){
+                    this->address_ = a;
+                };
+                Iterator(const Iterator & a){
+                    this->address_=a->address_;
+                }
+                private:
+                Node * address_ = nullptr;
+            }
+            class  ConstIterator{
+                public:
+
+                private:
+
+            }
             Tree() = default;
             Tree(Key key, Value value);
             Tree(const Tree<Key, Value> &obj);
