@@ -18,6 +18,11 @@ namespace s21 {
         RecursiveCopy(&this->root_, obj.root_);
     }
     //End constructors
+
+
+    //Begin --  Можно ли вынести реализацию  оператора begin в шаблонную часть ? 
+
+
     //HEIGHT AVL TREE FUNCTIONS FOR HELP
     template<typename Node> int CheckHeightNode(Node * a){
         return a ? a->height_:0;

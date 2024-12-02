@@ -35,12 +35,33 @@ namespace s21 {
                 Iterator() = default;
                 Iterator(Node * a){
                     this->address_ = a;
-                };
+                }
                 Iterator(const Iterator & a){
                     this->address_=a->address_;
                 }
+                ~Iterator(){
+                    if(this->address_ != nullptr) this->address_=nullptr;
+                }
+                Iterator &operator++(){
+                    if(this->address_->right_ != nullptr){
+                        this->address_=this->address_->right_;
+                        while((this->address_!=nullptr)&&(this->address_->left_ != nullptr)){
+                            this->address_=this->address_->left_;
+                        }
+                    }else{
+                        Node * tempPtr = this->address_;
+                        if(this->address_->parent_ != nullptr) this->address_ = this->address_->parent_;
+                        while ((tempPtr == this->address_->right_)&&this->address_ != nullptr){
+                            tempPtr=this->address_;
+                            this->address_=this->address_->parent_;
+                        }
+                    }
+                    return * this;
+                }
                 private:
                 Node * address_ = nullptr;
+
+                friend class Tree;
             }
             class  ConstIterator{
                 public:
@@ -48,6 +69,16 @@ namespace s21 {
                 private:
 
             }
+
+            Iterator begin(){
+                Node * tmpPtr = this->root_;
+                while(tmpPtr->left_ !=nullptr ){
+                    tmpPtr=tmpPtr->left_;
+                }
+                Iterator a(tmpPtr);
+                return a;
+            }
+
             Tree() = default;
             Tree(Key key, Value value);
             Tree(const Tree<Key, Value> &obj);
