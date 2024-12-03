@@ -62,9 +62,8 @@ namespace s21 {
                     if(this->last_elem != nullptr) this->last_elem = nullptr;
                 }
 
-                Node * get(){
-                    return this->address_;
-                }
+                Node * get(){ return this->address_; } // tempFunction
+                
                 Iterator &operator++(){
                     if(this->address_->right_ != nullptr){
                         this->address_=this->address_->right_;
@@ -72,7 +71,6 @@ namespace s21 {
                             this->address_=this->address_->left_;
                         }
                     }else if(this->address_!=this->last_elem){
-                        static bool flag_root =false;
                         Node * frstPtr = this->address_;
                         this->address_  = this->address_->parent_;
                         while (this->address_->parent_ != nullptr&& (frstPtr == this->address_->right_)){
@@ -104,15 +102,8 @@ namespace s21 {
                 Node * first_elem = nullptr;
                 Node * last_elem = nullptr;
                 friend class Tree;
-            };
-            // class  ConstIterator{
-            //     public:
-
-            //     private:
-
-            // }
-
-            Iterator begin(){
+            }; // End Iterator
+             Iterator begin(){
                 Node * tmpPtr = this->root_;
                 while(tmpPtr->left_ !=nullptr ){
                     tmpPtr=tmpPtr->left_;
@@ -127,6 +118,85 @@ namespace s21 {
                 }
                 return Iterator(tmpPtr);
             }
+            
+            
+            class  ConstIterator{
+                public:
+                ConstIterator() = default;
+                ConstIterator(const Node * a){
+                    this->address_ = a;
+                    Node * tmpPtr =this->address_;
+                    while(tmpPtr->parent_!=nullptr){
+                        tmpPtr=tmpPtr->parent_;
+                    }
+                    while(tmpPtr->left_ !=nullptr ){
+                        tmpPtr=tmpPtr->left_;
+                    }
+                    this->first_elem=tmpPtr;
+                    while(tmpPtr->parent_!=nullptr){
+                        tmpPtr=tmpPtr->parent_;
+                    }
+                    while(tmpPtr->right_!=nullptr){
+                        tmpPtr=tmpPtr->right_;
+                    }
+                    this->last_elem=tmpPtr;
+                }
+                ConstIterator(const Iterator & a){
+                    this->address_=a.address_;
+                    this->first_elem=a.first_elem;
+                    this->last_elem = a.last_elem;
+                }
+                ~ConstIterator(){
+                    if(this->address_ != nullptr) this->address_=nullptr;
+                    if(this->first_elem != nullptr) this->first_elem = nullptr;
+                    if(this->last_elem != nullptr) this->last_elem = nullptr;
+                }
+
+                const Node * get(){
+                    return this->address_;
+                }
+                ConstIterator &operator++(){
+                    if(this->address_->right_ != nullptr){
+                        this->address_=this->address_->right_;
+                        while((this->address_!=nullptr)&&(this->address_->left_ != nullptr)){
+                            this->address_=this->address_->left_;
+                        }
+                    }else if(this->address_!=this->last_elem){
+                        Node * frstPtr = this->address_;
+                        this->address_  = this->address_->parent_;
+                        while (this->address_->parent_ != nullptr&& (frstPtr == this->address_->right_)){
+                            frstPtr=this->address_;
+                            this->address_=this->address_->parent_;
+                        }
+                    }
+                    return * this;
+                }
+                ConstIterator & operator--(){
+                    if(this->address_->right_ != nullptr){
+                        this->address_=this->address_->left_;
+                        while((this->address_!=nullptr)&&(this->address_->right_ != nullptr)){
+                            this->address_=this->address_->right_;
+                        }
+                    }else if(this->address_!=this->first_elem){
+                        Node * frstPtr = this->address_;
+                        this->address_  = this->address_->parent_;
+                        while (this->address_->parent_ != nullptr&& (frstPtr == this->address_->left_)){
+                            frstPtr=this->address_;
+                            this->address_=this->address_->parent_;
+                        }
+                    }
+                    return * this;
+                }
+                private:
+                const Node * address_ = nullptr;
+                const Node * first_elem = nullptr;
+                const Node * last_elem = nullptr;
+                friend class Tree;
+
+            };//End const iterator
+
+           
+            
             Tree() = default;
             Tree(Key key, Value value);
             Tree(const Tree<Key, Value> &obj);

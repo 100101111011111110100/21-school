@@ -87,7 +87,7 @@ namespace s21 {
         FixHeight(a);
         int bf = BalanceFactor(a);
         if(bf==2){ // влево вправо
-                puts("===Rotate 2====");
+                // puts("===Rotate 2====");
                 // printf("(M)(key %d) h(%d)\n",a->key_, a->height_);
                 // printf("(L)(key %d) h(%d)\n",a->left_->key_, a->left_->height_);
                 // printf("(R)(key %d) h(%d)\n",a->right_->key_, a->right_->height_);
@@ -96,7 +96,7 @@ namespace s21 {
             if(a->left_ != nullptr && BalanceFactor(a->left_)<0) a->left_=RotateLeft(a->left_); //a->right_=RotateRight(a->right_);
             a=RotateRight(a);
         }else if (bf==-2){ // вправо влево 
-                puts("===Rotate -2====");
+                // puts("===Rotate -2====");
                 // printf("(M)(key %d) h(%d)\n",a->key_, a->height_);
                 // printf("(L)(key %d) h(%d)\n",a->left_->key_, a->left_->height_);
                 // printf("(R)(key %d) h(%d)\n",a->right_->key_, a->right_->height_);

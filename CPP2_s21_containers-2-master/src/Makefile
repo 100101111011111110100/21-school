@@ -11,7 +11,7 @@ endif
 
 CPP             := g++
 S21             := s21_containers
-SRC 			:= s21_containers.h
+SRC 			:= s21_containers.hpp
 GCOV_FLAGS 		:= -fprofile-arcs -ftest-coverage
 TREE			:= s21_AVL_Tree/s21_AVL_Tree.hpp
 MAP				:= s21_map/s21_map.hpp
