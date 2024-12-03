@@ -35,12 +35,31 @@ namespace s21 {
                 Iterator() = default;
                 Iterator(Node * a){
                     this->address_ = a;
+                    Node * tmpPtr =this->address_;
+                    while(tmpPtr->parent_!=nullptr){
+                        tmpPtr=tmpPtr->parent_;
+                    }
+                    while(tmpPtr->left_ !=nullptr ){
+                        tmpPtr=tmpPtr->left_;
+                    }
+                    this->first_elem=tmpPtr;
+                    while(tmpPtr->parent_!=nullptr){
+                        tmpPtr=tmpPtr->parent_;
+                    }
+                    while(tmpPtr->right_!=nullptr){
+                        tmpPtr=tmpPtr->right_;
+                    }
+                    this->last_elem=tmpPtr;
                 }
                 Iterator(const Iterator & a){
                     this->address_=a.address_;
+                    this->first_elem=a.first_elem;
+                    this->last_elem = a.last_elem;
                 }
                 ~Iterator(){
                     if(this->address_ != nullptr) this->address_=nullptr;
+                    if(this->first_elem != nullptr) this->first_elem = nullptr;
+                    if(this->last_elem != nullptr) this->last_elem = nullptr;
                 }
 
                 Node * get(){
@@ -52,27 +71,29 @@ namespace s21 {
                         while((this->address_!=nullptr)&&(this->address_->left_ != nullptr)){
                             this->address_=this->address_->left_;
                         }
-                    }else{
-                        Node * tempPtr = this->address_;
-                        if(this->address_->parent_ != nullptr) this->address_ = this->address_->parent_;
-                        while ((tempPtr == this->address_->right_)&&this->address_ != nullptr){
-                            tempPtr=this->address_;
+                    }else if(this->address_!=this->last_elem){
+                        static bool flag_root =false;
+                        Node * frstPtr = this->address_;
+                        this->address_  = this->address_->parent_;
+                        while (this->address_->parent_ != nullptr&& (frstPtr == this->address_->right_)){
+                            frstPtr=this->address_;
                             this->address_=this->address_->parent_;
                         }
+                        
                     }
                     return * this;
                 }
                 Iterator & operator--(){
                     if(this->address_->right_ != nullptr){
-                        this->address_=this->address_->right_;
-                        while((this->address_!=nullptr)&&(this->address_->left_ != nullptr)){
-                            this->address_=this->address_->left_;
+                        this->address_=this->address_->left_;
+                        while((this->address_!=nullptr)&&(this->address_->right_ != nullptr)){
+                            this->address_=this->address_->right_;
                         }
-                    }else{
-                        Node * tempPtr = this->address_;
-                        if(this->address_->parent_ != nullptr) this->address_ = this->address_->parent_;
-                        while ((tempPtr == this->address_->right_)&&this->address_ != nullptr){
-                            tempPtr=this->address_;
+                    }else if(this->address_!=this->first_elem){
+                        Node * frstPtr = this->address_;
+                        this->address_  = this->address_->parent_;
+                        while (this->address_->parent_ != nullptr&& (frstPtr == this->address_->left_)){
+                            frstPtr=this->address_;
                             this->address_=this->address_->parent_;
                         }
                     }
@@ -80,7 +101,8 @@ namespace s21 {
                 }
                 private:
                 Node * address_ = nullptr;
-
+                Node * first_elem = nullptr;
+                Node * last_elem = nullptr;
                 friend class Tree;
             };
             // class  ConstIterator{
@@ -98,7 +120,13 @@ namespace s21 {
                 Iterator a(tmpPtr);
                 return a;
             }
-
+            Iterator end(){
+                Node * tmpPtr = this->root_;
+                while(tmpPtr->right_ !=nullptr ){
+                    tmpPtr=tmpPtr->right_;
+                }
+                return Iterator(tmpPtr);
+            }
             Tree() = default;
             Tree(Key key, Value value);
             Tree(const Tree<Key, Value> &obj);
