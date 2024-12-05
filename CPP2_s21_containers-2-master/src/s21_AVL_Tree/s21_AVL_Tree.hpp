@@ -7,6 +7,10 @@ namespace s21 {
     template <class Key,class Value>
         class Tree{
             public:
+            using key_type = Key;
+            using mapped_type = Value;
+            using value_type = std::pair<const key_type, mapped_type>;
+
             struct Node;
             Node *getNode();        
             void InsObj(Key key, Value value);
@@ -187,6 +191,7 @@ namespace s21 {
                     }
                     return * this;
                 }
+                
                 private:
                 const Node * address_ = nullptr;
                 const Node * first_elem = nullptr;
@@ -195,10 +200,26 @@ namespace s21 {
 
             };//End const iterator
 
-           
-            
-            Tree() = default;
-            Tree(Key key, Value value);
+            ConstIterator begin() const{
+                Node * tmpPtr = this->root_;
+                while(tmpPtr->left_ !=nullptr ){
+                    tmpPtr=tmpPtr->left_;
+                }
+                ConstIterator a(tmpPtr);
+                return a;
+            }
+            ConstIterator end() const{
+                Node * tmpPtr = this->root_;
+                while(tmpPtr->right_ !=nullptr ){
+                    tmpPtr=tmpPtr->right_;
+                }
+                ConstIterator a(tmpPtr);
+                return a;
+            }
+
+            Tree();
+            // Tree(Key key, Value value);
+            Tree(std::initializer_list<value_type> const &items);
             Tree(const Tree<Key, Value> &obj);
             ~Tree();
             private:
@@ -210,7 +231,7 @@ namespace s21 {
                 Key key_;
                 Value value_;
             }Node;
-            Node * root_ = nullptr;
+            Node * root_=nullptr;
         };    
 };
 

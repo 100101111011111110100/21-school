@@ -6,16 +6,23 @@ namespace s21 {
         typename Tree<Key,Value>::Node * Tree<Key,Value>::getNode(){
             return this->root_;
         }
-    template <typename Key, typename Value>
-    Tree<Key, Value>::Tree(Key key, Value value) {
-        this->root_             = new Node;
-        this->root_->key_       = key;
-        this->root_->value_     = value;
-        this->root_->height_    = 1;
-    }
+    // template <typename Key, typename Value>
+    // Tree<Key, Value>::Tree(Key key, Value value) {
+
+    // }
     template <typename Key, typename Value>
     Tree<Key, Value>::Tree(const Tree<Key, Value> &obj) {
         RecursiveCopy(&this->root_, obj.root_);
+    }
+    template <typename Key, typename Value>
+    Tree<Key, Value>::Tree(){
+        this->root_ = nullptr;
+    }
+    template <typename Key,typename Value>
+    Tree<Key, Value>::Tree(std::initializer_list<value_type> const &items){
+        for(auto it=items.begin();it!=items.end();it++){
+            InsObj(it->first, it->second);
+        }
     }
     //End constructors
 
@@ -111,9 +118,12 @@ namespace s21 {
     template <typename Node, typename Key, typename Value>
     Node * MainInsert(Node * a,Key & key,Value & value){
         if (a == nullptr) {
-            a=new Node;
-            a->key_=key;
-            a->value_=value;
+            a             = new Node;
+            a->key_       = key;
+            a->value_     = value;
+            a->height_    = 1;
+            a->left_      = nullptr;
+            a->right_     = nullptr;
         }else {
             if(a->key_ < key) {
                 a->right_ =MainInsert(a->right_,key,value);
