@@ -1,18 +1,18 @@
 #include "s21_map.hpp"
 
 namespace s21 {
+    #ifdef DEBUG
     template <typename Key, typename T>
-    Map<Key,T>::Map(const Map<Key,T> &m){
-        this->tree_ = m.tree_;
+    void Map<Key,T>::PrintMap(){
+        tree_.PrintTree();
     }
-
-    template <typename Key, typename T>
-    Map<Key,T>::Map(Map<Key,T> &&m){
-        this->tree_ = m.tree_;
-        m.tree_ = nullptr;
-    }
+    #endif
     template <typename Key, typename T>
     Map<Key,T>::~Map(){
-        this->tree_.~Tree();
+        tree_.~Tree();
+    }
+    template <typename Key, typename T>
+    Map<Key,T>::Map(Map &&m){
+        tree_=std::move(m.tree_);
     }
 }

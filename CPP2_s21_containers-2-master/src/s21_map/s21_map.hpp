@@ -7,7 +7,7 @@
 namespace s21 {
 
     template < class Key, class T>
-    class Map : public Tree<Key,T> {
+    class Map : public Tree<Key,T> { 
         public:
             using key_type = Key;
             using mapped_type = T;
@@ -16,17 +16,21 @@ namespace s21 {
             using const_reference = const value_type&;
             using iterator = typename Tree<Key, T>::Iterator;
             using const_iterator = typename Tree<Key, T>::ConstIterator;
+            
             // using size_type = std::size_t;
             // Constructors
-            Map():Tree<Key,T>() {};	//default constructor, creates empty map
-            Map(std::initializer_list<value_type> const &items) : Tree<Key, T>(items){};//	initializer list constructor, creates the map initizialized using std::initializer_list
-            Map(const Map<Key,T> &m);//copy constructor
+            Map(): tree_(){};//default constructor
+            Map(std::initializer_list<value_type> const &items): tree_(items){};//	initializer list constructor, creates the map initizialized using std::initializer_list
+            Map(const Map<Key,T> &m): tree_(m.tree_){};//copy constructor
             Map(Map &&m);//	move constructor
-            ~Map();//	destructor
+            ~Map();//destructor
             // // Operators
-            // operator=(Map &&m);//	assignment operator overload for moving object
-        private : 
-            s21::Tree<Key,T> tree_;
+            // operator=(Map &&m);//	assignment operator overload for moving object                    
+            #ifdef DEBUG
+            void PrintMap();
+            #endif
+        private :    
+            s21::Tree<Key,T> tree_;   
     };
 }
 

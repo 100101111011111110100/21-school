@@ -1,6 +1,31 @@
 #include "s21_AVL_Tree.hpp"
 
 namespace s21 {
+    // Print
+    #ifdef DEBUG
+    template<typename Key, typename Value>
+      void Tree<Key,Value>::Print(Node * root){
+        if(this->root_ != nullptr)printf("(M)(key %d) h(%d) %p\n",root->key_, root->height_,root);
+        else printf("(M)%p\n",root);
+        if(root->left_ != nullptr)printf("(L)(key %d) h(%d)\n",root->left_->key_, root->left_->height_);
+        else printf("(L)%p\n",root->left_);
+        if(root->right_ != nullptr)printf("(R)(key %d) h(%d)\n",root->right_->key_, root->right_->height_);
+        else printf("(R)%p\n",root->right_);
+        if(root->parent_ != nullptr)printf("(P) (parent_key %d) %p\n",root->parent_->key_,root->parent_);
+        else printf("(P)%p\n",root->parent_);
+        puts("====================================");
+        if(root->left_ != nullptr){
+            Print(root->left_);
+        } 
+        if(root->right_ != nullptr){
+            Print(root->right_);
+        } 
+    }
+    template<typename Key, typename Value>
+        void Tree<Key,Value>::PrintTree(){
+            Print(this->root_);
+        }
+    #endif
     //Constructors
     template <typename Key, typename Value> 
         typename Tree<Key,Value>::Node * Tree<Key,Value>::getNode(){
@@ -11,10 +36,6 @@ namespace s21 {
 
     // }
     template <typename Key, typename Value>
-    Tree<Key, Value>::Tree(const Tree<Key, Value> &obj) {
-        RecursiveCopy(&this->root_, obj.root_);
-    }
-    template <typename Key, typename Value>
     Tree<Key, Value>::Tree(){
         this->root_ = nullptr;
     }
@@ -23,6 +44,10 @@ namespace s21 {
         for(auto it=items.begin();it!=items.end();it++){
             InsObj(it->first, it->second);
         }
+    }
+    template <typename Key, typename Value>
+    Tree<Key, Value>::Tree(const Tree<Key, Value> &obj) { //copy constructor
+        RecursiveCopy(&this->root_, obj.root_);
     }
     //End constructors
 
@@ -43,6 +68,7 @@ namespace s21 {
         a->height_=std::max(CheckHeightNode(a->left_),CheckHeightNode(a->right_))+1;
     }
     //END  HEIGHT AVL TREE FUNCTIONS FOR HELP
+    
     template <typename Node>
     void RecursiveCopy(Node ** first, Node * seconde) {
         if(seconde != nullptr) {
@@ -51,7 +77,9 @@ namespace s21 {
             (*first)->value_ = seconde->value_;
             (*first)->height_ = seconde->height_;
             RecursiveCopy(&(*first)->left_, seconde->left_);
+            if((*first)->left_ != nullptr) (*first)->left_->parent_ = *first;
             RecursiveCopy(&(*first)->right_, seconde->right_);
+            if((*first)->left_ != nullptr) (*first)->left_->parent_ = *first;
         }
     }
     
@@ -114,7 +142,6 @@ namespace s21 {
         }
         return a;
     }
-
     template <typename Node, typename Key, typename Value>
     Node * MainInsert(Node * a,Key & key,Value & value){
         if (a == nullptr) {
@@ -124,6 +151,7 @@ namespace s21 {
             a->height_    = 1;
             a->left_      = nullptr;
             a->right_     = nullptr;
+            a->parent_    = nullptr;
         }else {
             if(a->key_ < key) {
                 a->right_ =MainInsert(a->right_,key,value);
@@ -139,12 +167,10 @@ namespace s21 {
     void Tree <Key, Value>::InsObj(Key key, Value value) {
         this->root_=MainInsert(this->root_,key,value);
     }
-
     template <typename Node>
     Node * FindMin(Node * a){
         return a->left_?FindMin(a->left_):a;
     }
-
     template <typename Node>
     Node * RemoveMin(Node * a){
         if(a->left_ == nullptr){
@@ -154,7 +180,6 @@ namespace s21 {
         }
         return RotateNBalance(a);
     }
-
     template <typename Node,typename Key>
     Node * MainRemove(Node * a,Key key){
         if(a == nullptr)     return nullptr;
@@ -176,7 +201,6 @@ namespace s21 {
         }
         return RotateNBalance(a);
     }
-
     template <typename Key,typename Value>
     void Tree <Key, Value>::Remove(Key key){
         this->root_ = MainRemove(this->root_,key);
