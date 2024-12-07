@@ -1,6 +1,8 @@
 #include "s21_AVL_Tree.hpp"
 
 namespace s21 {
+
+    
     // Print
     #ifdef DEBUG
     template<typename Key, typename Value>
@@ -50,10 +52,12 @@ namespace s21 {
         RecursiveCopy(&this->root_, obj.root_);
     }
     //End constructors
-
-
-    //Begin --  Можно ли вынести реализацию  оператора begin в шаблонную часть ? 
-
+    template <typename Key, typename Value>
+    Tree<Key,Value> & Tree<Key,Value>::operator=(const Tree<Key,Value> & obj){
+        this->~Tree();
+        RecursiveCopy(&this->root_, obj.root_);
+        return *this;
+    }
 
     //HEIGHT AVL TREE FUNCTIONS FOR HELP
     template<typename Node> int CheckHeightNode(Node * a){
@@ -79,7 +83,7 @@ namespace s21 {
             RecursiveCopy(&(*first)->left_, seconde->left_);
             if((*first)->left_ != nullptr) (*first)->left_->parent_ = *first;
             RecursiveCopy(&(*first)->right_, seconde->right_);
-            if((*first)->left_ != nullptr) (*first)->left_->parent_ = *first;
+            if((*first)->right_ != nullptr) (*first)->right_->parent_ = *first;
         }
     }
     
@@ -222,5 +226,16 @@ namespace s21 {
             this->root_=nullptr;          
         }
     }
+
+    template <typename Key, typename Value, typename Node>
+    Node * Tree<Key,Value>::findNode(const Key & key){
+        Node * tmpPtr = this->root_;
+        while (tmpPtr != nullptr && tmpPtr->key_ != key) {
+            if(tmpPtr->key_ < key) tmpPtr=tmpPtr->right_;
+            else tmpPtr=tmpPtr->left_;
+        }
+        return tmpPtr;
+    }
+
 };
 
